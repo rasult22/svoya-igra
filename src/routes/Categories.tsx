@@ -1,47 +1,26 @@
 import React, { useState } from 'react';
 import { round1 } from '../rounds';
+import { Category, Player, Question } from '.';
 
-interface Player {
-  id: number;
-  name: string;
-}
 
-interface Question {
-  question: string;
-  answer?: string;
-  price: number;
-  img?: string;
-  isRedirect?: boolean;
-  show: boolean;
-}
-
-interface Category {
-  name: string;
-  prices: Question[];
-}
 
 interface GameBoardProps {
   players: Player[];
-  onAnswer: (id: number, price: number) => void;
+  categories: Category[];
+  updateCategories: (categories: Category[]) => void;
+  onAnswer: (id: number, price: number, type: 'add' | 'subtract') => void;
 }
 
-const Categories: React.FC<GameBoardProps> = ({ players, onAnswer }) => {
-  const [categories, setCategories] = useState<Category[]>(round1.categories);
+const Categories: React.FC<GameBoardProps> = ({ players, onAnswer, categories, updateCategories }) => {
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
   const [showAnswer, setShowAnswer] = useState(false);
-
-  const handleCellClick = (categoryIndex: number, priceIndex: number) => {
-    const updatedCategories = [...categories];
-    updatedCategories[categoryIndex].prices[priceIndex].show = true;
-    setCategories(updatedCategories);
-  };
 
   const handleClick = (question: Question) => {
     setCurrentQuestion(question);
   };
 
-  const handleAnswer = (id: number, price: number) => {
-    onAnswer(id, price);
+  const handleAnswer = (id: number, price: number, type: 'add' | 'subtract') => {
+    onAnswer(id, price, type);
     setShowAnswer(false);
     if (currentQuestion) {
       const updatedCategories = categories.map((category) => ({
@@ -50,7 +29,7 @@ const Categories: React.FC<GameBoardProps> = ({ players, onAnswer }) => {
           q === currentQuestion ? { ...q, show: false } : q
         ),
       }));
-      setCategories(updatedCategories);
+      updateCategories(updatedCategories)
     }
     setCurrentQuestion(null);
   };
@@ -62,35 +41,54 @@ const Categories: React.FC<GameBoardProps> = ({ players, onAnswer }) => {
           <div className="text-yellow-400 text-[32px]">
             {currentQuestion.question}
           </div>
-          <button
-            onClick={() => setShowAnswer(true)}
-            className="bg-white text-black p-2 rounded-[12px] mt-4"
-          >
-            Показать ответ
-          </button>
+          {
+            !showAnswer && 
+            <button
+              onClick={() => setShowAnswer(true)}
+              className="bg-white text-black p-2 rounded-[12px] mt-4"
+            >
+              Показать ответ
+            </button>
+          }
           {showAnswer && (
-            <div className="mt-4">{currentQuestion.answer}</div>
+            <div className="mt-8 bg-green-500 p-4 rounded-md">{currentQuestion.answer}</div>
           )}
           {showAnswer && (
-            <div className="mt-4">
-              <div className="text-yellow-400">Засчитать ответ игроку:</div>
-              <ul className="flex justify-center mt-4 gap-4">
-                {players.map((player) => (
+            <div className="mt-8 flex flex-col">
+              <div>
+                <div className="">Засчитать <span className='text-green-400'>верный</span> ответ игроку:</div>
+                <ul className="flex justify-center mt-4 gap-4">
+                  {players.map((player) => (
+                    <button
+                      key={player.id}
+                      onClick={() => handleAnswer(player.id, currentQuestion.price, 'add')}
+                      className="p-2 bg-green-400 text-black flex flex-col gap-2 rounded-sm"
+                    >
+                      <div>{player.name}</div>
+                    </button>
+                  ))}
                   <button
-                    key={player.id}
-                    onClick={() => handleAnswer(player.id, currentQuestion.price)}
-                    className="p-2 bg-green-400 text-black flex flex-col gap-2 rounded-sm"
+                    onClick={() => handleAnswer(0, 0, 'add')}
+                    className="p-2 bg-white text-black rounded"
                   >
-                    <div>{player.name}</div>
+                    Никому
                   </button>
-                ))}
-                <button
-                  onClick={() => handleAnswer(0, 0)}
-                  className="p-2 bg-red-500 text-black rounded"
-                >
-                  Никому
-                </button>
-              </ul>
+                </ul>
+              </div>
+              <div>
+                <div className="mt-8">Засчитать <span className='text-red-400'>неверный</span> ответ игроку:</div>
+                <ul className="flex mt-4 gap-4">
+                  {players.map((player) => (
+                    <button
+                      key={player.id}
+                      onClick={() => handleAnswer(player.id, currentQuestion.price, 'subtract')}
+                      className="p-2 bg-red-500 text-white flex flex-col gap-2 rounded-sm"
+                    >
+                      <div>{player.name}</div>
+                    </button>
+                  ))}
+                </ul>
+              </div>
             </div>
           )}
         </div>
