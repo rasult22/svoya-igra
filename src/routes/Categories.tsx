@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import { round1 } from '../rounds';
 import { Category, Player, Question } from '.';
-
-
+import Timer from './Timer';
 
 interface GameBoardProps {
   players: Player[];
@@ -51,6 +49,9 @@ const Categories: React.FC<GameBoardProps> = ({ players, onAnswer, categories, u
     <div className="min-h-screen overflow-auto p-8">
       {currentQuestion && (
         <div className="fixed flex flex-col items-center justify-center w-full z-[50] h-full top-0 left-0 bg-blue-800">
+          <Timer onTimeEnd={() => {
+            //
+          }}/>
           <div className="text-yellow-400 text-center px-4 max-w-[60%] leading-[140%] text-[32px]">
             {currentQuestion.question}
           </div>
