@@ -4,13 +4,13 @@ import { round1, round2, round3 } from '../rounds';
 import { useNavigate } from 'react-router-dom';
 
 const Game: React.FC = () => {
-  const [categories, setCategories] = useState<Category[]>(round1.categories);
-  const [currentRound, setCurrentRound] = useState(1);
+  const [categories, setCategories] = useState<Category[]>(round3.categories);
+  const [currentRound, setCurrentRound] = useState(3);
   const navigate = useNavigate()
   const [players, setPlayers] = useState<Player[]>([
     { id: 1, name: "Мадина", score: 0 },
     { id: 2, name: "Баян", score: 0 },
-    { id: 3, name: "Марат", score: 0 },
+    { id: 3, name: "Амир", score: 0 },
     { id: 4, name: "Алина", score: 0 },
     { id: 5, name: "Айсулу", score: 0 },
   ]);

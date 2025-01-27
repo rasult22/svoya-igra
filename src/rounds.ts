@@ -77,7 +77,7 @@ export const round1 = {
           price: 100,
           question: "Кто изображен на рисунке?",
           show: true,
-          img: 'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/0f/ba/29/5c/img-worlds-of-adventure.jpg?w=900&h=500&s=1',
+          img: '/aldar-kose.jpeg',
           answer: "Алдар-Косе и хвастливый бай"
         },
         {
@@ -95,12 +95,14 @@ export const round1 = {
         {
           price: 400,
           question: "Из какой сказки данная иллюстрация?",
+          img: "snejnaya-koroleva.jfif",
           show: true,
           answer: "Снежная королева"
         },
         {
           price: 500,
           question: "Угадай какая пословица спрятана на картинке?",
+          img: '100-rublei.webp',
           show: true,
           answer: "не имей 100 рублей, а имей 100 друзей"
         }
@@ -228,7 +230,7 @@ export const round3 = {
           price: 100,
           question: "Как называют спортсмена, одержавшего победу в соревнованиях?",
           show: true,
-          answer: "чемпион"
+          answer: "чемпион/победитель"
         },
         {
           price: 200,

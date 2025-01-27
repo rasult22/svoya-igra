@@ -19,7 +19,20 @@ const Categories: React.FC<GameBoardProps> = ({ players, onAnswer, categories, u
     setCurrentQuestion(question);
   };
 
-  const handleAnswer = (id: number, price: number, type: 'add' | 'subtract') => {
+  const handleAnswer = (id: number, price: number, type: 'add' | 'subtract', isRedirect?: boolean) => {
+    if (isRedirect) {
+      if (currentQuestion) {
+        const updatedCategories = categories.map((category) => ({
+          ...category,
+          prices: category.prices.map((q) =>
+            q === currentQuestion ? { ...q, show: false } : q
+          ),
+        }));
+        updateCategories(updatedCategories)
+        setCurrentQuestion(null);
+        return
+      }
+    }
     onAnswer(id, price, type);
     setShowAnswer(false);
     if (currentQuestion) {
@@ -35,20 +48,31 @@ const Categories: React.FC<GameBoardProps> = ({ players, onAnswer, categories, u
   };
 
   return (
-    <div className="min-h-screen p-8">
+    <div className="min-h-screen overflow-auto p-8">
       {currentQuestion && (
         <div className="fixed flex flex-col items-center justify-center w-full z-[50] h-full top-0 left-0 bg-blue-800">
-          <div className="text-yellow-400 text-[32px]">
+          <div className="text-yellow-400 text-center px-4 max-w-[60%] leading-[140%] text-[32px]">
             {currentQuestion.question}
           </div>
           {
-            !showAnswer && 
+            currentQuestion && currentQuestion.img && <img  src={currentQuestion.img} alt="img" className="w-1/2 max-w-[35vw] mt-4 rounded-lg border-2 border-black shadow" />
+          }
+          {
+            !showAnswer && currentQuestion && !currentQuestion.isRedirect && 
             <button
               onClick={() => setShowAnswer(true)}
               className="bg-white text-black p-2 rounded-[12px] mt-4"
             >
               Показать ответ
             </button>
+          }
+          {
+            currentQuestion.isRedirect && <button
+            onClick={() => handleAnswer(0, currentQuestion.price, 'add', true)}
+            className="bg-white text-black p-2 rounded-[12px] mt-4"
+          >
+            Закрыть
+          </button>
           }
           {showAnswer && (
             <div className="mt-8 bg-green-500 p-4 rounded-md">{currentQuestion.answer}</div>
