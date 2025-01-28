@@ -8,11 +8,11 @@ const Game: React.FC = () => {
   const [currentRound, setCurrentRound] = useState(1);
   const navigate = useNavigate()
   const [players, setPlayers] = useState<Player[]>([
-    { id: 1, name: "Мадина", score: 0 },
-    { id: 2, name: "Баян", score: 0 },
-    { id: 3, name: "Амир", score: 0 },
-    { id: 4, name: "Алина", score: 0 },
-    { id: 5, name: "Айсулу", score: 0 },
+    { id: 1, name: "Мадина", score: 0, isExcludable: false, isWinnable: false },
+    { id: 2, name: "Баян", score: 0, isExcludable: false, isWinnable: false },
+    { id: 3, name: "Амир", score: 0, isExcludable: false, isWinnable: false },
+    { id: 4, name: "Алина", score: 0, isExcludable: false, isWinnable: false },
+    { id: 5, name: "Айсулу", score: 0, isExcludable: false, isWinnable: false },
   ]);
 
   const onAnswer = (playerId: number, price: number, type: 'add' | 'subtract') => {
@@ -30,12 +30,27 @@ const Game: React.FC = () => {
       );
     }
   };
+  const deletePlayer = (playerId: number) => {
+    setPlayers(prevPlayers => prevPlayers.filter(player => player.id !== playerId));
+    setPlayers(prevPlayers => prevPlayers.map(player => {
+      return { ...player, isExcludable: false };
+    }))
+  }
 
   useEffect(() => {
     const excludePlayer = () => {
-      const playerToExclude = players.find(player => player.score === Math.min(...players.map(p => p.score)));
-      if (playerToExclude) {
-        setPlayers(prevPlayers => prevPlayers.filter(player => player.id !== playerToExclude.id));
+      const minScore = Math.min(...players.map(p => p.score));
+      const playersWithMinScore = players.filter(player => player.score === minScore);
+      if (playersWithMinScore.length === 1) {
+        setPlayers(prevPlayers => prevPlayers.filter(player => player.id !== playersWithMinScore[0].id));
+      } else {
+        // if there are multiple players with the same score set  isExcludable to true
+        setPlayers(prevPlayers => prevPlayers.map(player => {
+          if (player.score === minScore) {
+            return { ...player, isExcludable: true };
+          }
+          return player;
+        }));
       }
     }
     if (categories.every(category => category.prices.every(q => !q.show))) {
@@ -53,17 +68,30 @@ const Game: React.FC = () => {
         // End game
         // sum up scores
         // display winner 
-        const winner = players.reduce((prev, current) => (prev.score > current.score) ? prev : current);
-        const data = {
-          winner,
-          players
+        const maxScore = Math.max(...players.map(p => p.score));
+        const playersWithMaxScore = players.filter(player => player.score === maxScore);
+        if (playersWithMaxScore.length === 1) {
+          const winner = players.reduce((prev, current) => (prev.score > current.score) ? prev : current);
+          const data = {
+            winner,
+            players
+          }
+  
+          // encode URL data as query param
+          const url = encodeURIComponent(JSON.stringify(data))
+          
+  
+          navigate('/game-end'+ '?data=' + url) 
+        } else {
+          // if there are multiple players with the same score set  isWinnable to true
+          setPlayers(prevPlayers => prevPlayers.map(player => {
+            if (player.score === maxScore) {
+              return { ...player, isWinnable: true };
+            }
+            return player;
+          }));
         }
 
-        // encode URL data as query param
-        const url = encodeURIComponent(JSON.stringify(data))
-        
-
-        navigate('/game-end'+ '?data=' + url) 
       }
     }
   }, [categories]);
@@ -72,11 +100,29 @@ const Game: React.FC = () => {
       <h1 className="text-center">Своя Игра - Русский язык и литература</h1>
       <h2 className="text-center"> {currentRound} раунд</h2>
       <div>
-        <ul className="flex justify-center mt-4">
+        <ul className="flex justify-center mt-4 pb-4">
           {players.map(player => (
-            <li key={player.name} className="text-[24px] border border-green-400 p-2 text-center rounded-md bg-black text-black flex flex-col gap-2">
+            <li key={player.name} className="text-[24px] relative border border-green-400 p-2 text-center rounded-md bg-black text-black flex flex-col gap-2">
               <div className='p-4 text-center font-medium rounded-sm bg-green-400'>{player.name}</div>
               <div className="text-[16px] text-white opacity-85">{player.score} очков</div>
+              {
+                player.isExcludable &&
+                <button onClick={() => {
+                  deletePlayer(player.id)
+                }} className='bg-white active:scale-95 transition-all hover:opacity-65 text-[12px] p-2 absolute bottom-[-39%] left-[50%] translate-x-[-50%]'>Исключить</button>
+              }
+              {
+                player.isWinnable &&
+                <button onClick={() => {
+                  const data = {
+                    winner: player,
+                    players
+                  }
+                  // encode URL data as query param
+                  const url = encodeURIComponent(JSON.stringify(data))
+                  navigate('/game-end'+ '?data=' + url) 
+                }} className='bg-white active:scale-95 transition-all hover:opacity-65 text-[12px] p-2 absolute bottom-[-39%] left-[50%] translate-x-[-50%]'>Присвоить победу</button>
+              }
             </li>
           ))}
         </ul>
@@ -108,6 +154,8 @@ export default Game;
 
 export interface Player {
   id: number;
+  isExcludable: boolean;
+  isWinnable: boolean;
   name: string;
   score: number;
 }
