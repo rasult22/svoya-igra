@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Categories from './Categories'; // Assuming Categories is also converted to a React component
+import Categories from './Categories';
 import { round1, round2, round3 } from '../rounds';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,8 +11,8 @@ const Game: React.FC = () => {
     { id: 1, name: "Мадина", score: 0, isExcludable: false, isWinnable: false, hidden: false },
     { id: 2, name: "Баян", score: 0, isExcludable: false, isWinnable: false, hidden: false },
     { id: 3, name: "Амир", score: 0, isExcludable: false, isWinnable: false, hidden: false },
-    { id: 4, name: "Алина", score: 0, isExcludable: false, isWinnable: false, hidden: false },
-    { id: 5, name: "Айсулу", score: 0, isExcludable: false, isWinnable: false, hidden: false },
+    { id: 4, name: "Нурасыл", score: 0, isExcludable: false, isWinnable: false, hidden: false },
+    { id: 5, name: "Аяулым", score: 0, isExcludable: false, isWinnable: false, hidden: false },
   ]);
 
   const onAnswer = (playerId: number, price: number, type: 'add' | 'subtract') => {
