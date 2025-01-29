@@ -122,7 +122,7 @@ const Categories: React.FC<GameBoardProps> = ({ players, onAnswer, categories, u
         <div className="grid grid-cols-3 gap-4">
           {categories.map((category, i) => (
             <div key={category.name} className="space-y-4">
-              <div className="bg-blue-800 p-4 h-24 flex items-center justify-center rounded">
+              <div className="bg-blue-800 shadow-lg p-4 h-24 flex items-center justify-center rounded">
                 <div className="text-yellow-400 font-bold text-[20px] text-center">
                   {category.name}
                 </div>
@@ -132,7 +132,7 @@ const Categories: React.FC<GameBoardProps> = ({ players, onAnswer, categories, u
                   key={price.price}
                   onClick={() => price.show && handleClick(price)}
                   style={{ opacity: price.show ? 1 : 0 }}
-                  className="bg-blue-950 p-4 h-24 flex items-center justify-center rounded cursor-pointer"
+                  className="bg-blue-950 shadow-lg p-4 h-24 flex items-center justify-center rounded cursor-pointer"
                 >
                   <span className="text-yellow-400 font-bold text-2xl">
                     {price.price}

@@ -1,104 +1,32 @@
-import React, { useEffect, useState } from 'react';
-import Categories from './Categories';
-import { round1, round2, round3 } from '../rounds';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import intro_sound from './game-start/intro.mp3'
+import { playerList } from './game-start';
 
 const Game: React.FC = () => {
-  const [categories, setCategories] = useState<Category[]>(round1.categories);
-  const [currentRound, setCurrentRound] = useState(1);
   const navigate = useNavigate()
-  const [players, setPlayers] = useState<Player[]>([
-    { id: 1, name: "Мадина", score: 0, isExcludable: false, isWinnable: false, hidden: false },
-    { id: 2, name: "Баян", score: 0, isExcludable: false, isWinnable: false, hidden: false },
-    { id: 3, name: "Амир", score: 0, isExcludable: false, isWinnable: false, hidden: false },
-    { id: 4, name: "Нурасыл", score: 0, isExcludable: false, isWinnable: false, hidden: false },
-    { id: 5, name: "Аяулым", score: 0, isExcludable: false, isWinnable: false, hidden: false },
-  ]);
-
-  const onAnswer = (playerId: number, price: number, type: 'add' | 'subtract') => {
-    if (type === 'subtract') {
-      setPlayers(prevPlayers =>
-        prevPlayers.map(player =>
-          player.id === playerId ? { ...player, score: player.score - 100 } : player
-        )
-      );
-    } else {
-      setPlayers(prevPlayers =>
-        prevPlayers.map(player =>
-          player.id === playerId ? { ...player, score: player.score + price } : player
-        )
-      );
-    }
-  };
-  const deletePlayer = (playerId: number) => {
-    setPlayers(prevPlayers => prevPlayers.filter(player => player.id !== playerId));
-    setPlayers(prevPlayers => prevPlayers.map(player => {
-      return { ...player, isExcludable: false };
-    }))
-  }
+  const introSoundRef = useRef<HTMLAudioElement>(null)
+  
+  const [players, setPlayers] = useState<Player[]>(playerList);
 
   useEffect(() => {
-    const excludePlayer = () => {
-      const minScore = Math.min(...players.map(p => p.score));
-      const playersWithMinScore = players.filter(player => player.score === minScore);
-      if (playersWithMinScore.length === 1) {
-        setPlayers(prevPlayers => prevPlayers.filter(player => player.id !== playersWithMinScore[0].id));
-      } else {
-        // if there are multiple players with the same score set  isExcludable to true
-        setPlayers(prevPlayers => prevPlayers.map(player => {
-          if (player.score === minScore) {
-            return { ...player, isExcludable: true };
-          }
-          return player;
-        }));
-      }
-    }
-    if (categories.every(category => category.prices.every(q => !q.show))) {
-      if (currentRound === 1) {
-        setCategories(round2.categories);
-        setCurrentRound(2);
-        excludePlayer();
-      }
-      if (currentRound === 2) {
-        setCategories(round3.categories);
-        setCurrentRound(3);
-        excludePlayer();
-      }
-      if (currentRound === 3) {
-        // End game
-        // sum up scores
-        // display winner 
-        const maxScore = Math.max(...players.map(p => p.score));
-        const playersWithMaxScore = players.filter(player => player.score === maxScore);
-        if (playersWithMaxScore.length === 1) {
-          const winner = players.reduce((prev, current) => (prev.score > current.score) ? prev : current);
-          const data = {
-            winner,
-            players
-          }
-  
-          // encode URL data as query param
-          const url = encodeURIComponent(JSON.stringify(data))
-          
-  
-          navigate('/game-end'+ '?data=' + url) 
-        } else {
-          // if there are multiple players with the same score set  isWinnable to true
-          setPlayers(prevPlayers => prevPlayers.map(player => {
-            if (player.score === maxScore) {
-              return { ...player, isWinnable: true };
-            }
-            return player;
-          }));
+    if (introSoundRef.current) {
+      introSoundRef.current.volume = 0.4
+      introSoundRef.current.play();
+    } else {
+      setTimeout(() => {
+        if (introSoundRef.current) {
+          introSoundRef.current.volume = 0.4
+          introSoundRef.current.play();
         }
-
-      }
+      }, 1000)
     }
-  }, [categories]);
+  }, [])
+
   return (
-    <section>
-      <h1 className="text-center">Своя Игра - Русский язык и литература</h1>
-      <h2 className="text-center"> {currentRound} раунд</h2>
+    <section className='flex flex-col items-center justify-center min-h-screen'>
+      <h1 className="text-center max-w-[500px]">Добро пожаловать в интеллектуальную игру <br/> "Своя игра".</h1>
+      <h2 className="text-center text-blue-100">Русский язык и литература</h2>
       <div>
         <ul className="flex justify-center mt-4 pb-4">
           {players.map(player => (
@@ -108,7 +36,6 @@ const Game: React.FC = () => {
               {
                 player.isExcludable &&
                 <button onClick={() => {
-                  deletePlayer(player.id)
                 }} className='bg-white active:scale-95 transition-all hover:opacity-65 text-[12px] p-2 absolute bottom-[-39%] left-[50%] translate-x-[-50%]'>Исключить</button>
               }
               {
@@ -126,15 +53,12 @@ const Game: React.FC = () => {
             </li>
           ))}
         </ul>
-
-        <Categories
-          updateCategories={(categories) => {
-            setCategories(categories)
-          }} 
-          players={players} 
-          onAnswer={onAnswer} 
-          categories={categories} />
       </div>
+      <audio autoPlay className="w-0 h-0" ref={introSoundRef} src={intro_sound} preload="auto"></audio>
+
+      <button onClick={() => {
+        navigate('/game-start')
+      }} className='active:scale-95 transition-all active:opacity-85 bg-gradient-to-r mt-9 from-green-500 to-blue-400 p-4 text-white font-medium rounded-md'>Начать игру</button>
     </section>
   );
 };
