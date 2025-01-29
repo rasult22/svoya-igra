@@ -12,7 +12,7 @@ const GameEnd = () => {
   return <>
     <h1 className="text-center text-[50px]">Результаты</h1>
     <li className="mt-8 w-[400px] mx-auto text-[24px] relative border border-green-400 p-2 text-center rounded-md bg-black text-black flex flex-col gap-2">
-      <div className="text-white">Победитель!</div>
+      <div className="text-white">🎉🎊 Победитель! 🎉🎊</div>
       <div className='p-4 text-center font-medium rounded-sm bg-green-400'>{parsedData?.winner.name}</div>
       <div className="text-[16px] text-white opacity-85">{parsedData?.winner.score} очков</div>
     </li>
@@ -39,6 +39,7 @@ const GameEnd = () => {
         </table>
       </div>
     </div>
+    <h1 className="text-center text-[40px] mt-8">Спасибо за внимание!</h1>
   </>
 }
 

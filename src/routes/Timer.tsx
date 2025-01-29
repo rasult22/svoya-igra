@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import clock_tick from './clock_tick.wav';
+import clock_tick from './30_sec.mp3';
 import clock_end from './timer-tick-end.mp3';
 const CountdownTimer: React.FC<{
   onTimeEnd: () => void
@@ -19,9 +19,12 @@ const CountdownTimer: React.FC<{
   useEffect(() => {
     let timer: number;
     if (isRunning && seconds > 0) {
+      console.log(seconds)
+     if (seconds === 30) {
+        playTickSound();
+     }
       timer = setInterval(() => {
         setSeconds(prevSeconds => prevSeconds - 1);
-        playTickSound();
       }, 1000);
     } else if (seconds === 0) {
       setIsRunning(false);
