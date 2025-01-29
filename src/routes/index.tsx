@@ -13,14 +13,7 @@ const Game: React.FC = () => {
     if (introSoundRef.current) {
       introSoundRef.current.volume = 0.4
       introSoundRef.current.play();
-    } else {
-      setTimeout(() => {
-        if (introSoundRef.current) {
-          introSoundRef.current.volume = 0.4
-          introSoundRef.current.play();
-        }
-      }, 1000)
-    }
+    } 
   }, [])
 
   return (
