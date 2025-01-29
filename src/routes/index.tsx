@@ -8,11 +8,11 @@ const Game: React.FC = () => {
   const [currentRound, setCurrentRound] = useState(1);
   const navigate = useNavigate()
   const [players, setPlayers] = useState<Player[]>([
-    { id: 1, name: "Мадина", score: 0, isExcludable: false, isWinnable: false },
-    { id: 2, name: "Баян", score: 0, isExcludable: false, isWinnable: false },
-    { id: 3, name: "Амир", score: 0, isExcludable: false, isWinnable: false },
-    { id: 4, name: "Алина", score: 0, isExcludable: false, isWinnable: false },
-    { id: 5, name: "Айсулу", score: 0, isExcludable: false, isWinnable: false },
+    { id: 1, name: "Мадина", score: 0, isExcludable: false, isWinnable: false, hidden: false },
+    { id: 2, name: "Баян", score: 0, isExcludable: false, isWinnable: false, hidden: false },
+    { id: 3, name: "Амир", score: 0, isExcludable: false, isWinnable: false, hidden: false },
+    { id: 4, name: "Алина", score: 0, isExcludable: false, isWinnable: false, hidden: false },
+    { id: 5, name: "Айсулу", score: 0, isExcludable: false, isWinnable: false, hidden: false },
   ]);
 
   const onAnswer = (playerId: number, price: number, type: 'add' | 'subtract') => {
@@ -156,6 +156,7 @@ export interface Player {
   id: number;
   isExcludable: boolean;
   isWinnable: boolean;
+  hidden: boolean;
   name: string;
   score: number;
 }
