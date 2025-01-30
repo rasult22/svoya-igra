@@ -2,20 +2,20 @@ import React, { useEffect, useState } from 'react';
 import Categories from './Categories';
 import { round1, round2, round3 } from '../../rounds';
 import { useNavigate } from 'react-router-dom';
-export const playerList = [
-  { id: 1, name: "Айгерим", score: 0, isExcludable: false, isWinnable: false, hidden: false },
-  { id: 2, name: "Елдана", score: 0, isExcludable: false, isWinnable: false, hidden: false },
-  { id: 3, name: "Баян", score: 0, isExcludable: false, isWinnable: false, hidden: false },
-  { id: 4, name: "Балауса", score: 0, isExcludable: false, isWinnable: false, hidden: false },
-  { id: 5, name: "Аида", score: 0, isExcludable: false, isWinnable: false, hidden: false },
-]
 // export const playerList = [
-//   { id: 1, name: "Мадина", score: 0, isExcludable: false, isWinnable: false, hidden: false },
-//   { id: 2, name: "Баян", score: 0, isExcludable: false, isWinnable: false, hidden: false },
-//   { id: 3, name: "Амир", score: 0, isExcludable: false, isWinnable: false, hidden: false },
-//   { id: 4, name: "Нурасыл", score: 0, isExcludable: false, isWinnable: false, hidden: false },
-//   { id: 5, name: "Аяулым", score: 0, isExcludable: false, isWinnable: false, hidden: false },
+//   { id: 1, name: "Айгерим", score: 0, isExcludable: false, isWinnable: false, hidden: false },
+//   { id: 2, name: "Елдана", score: 0, isExcludable: false, isWinnable: false, hidden: false },
+//   { id: 3, name: "Баян", score: 0, isExcludable: false, isWinnable: false, hidden: false },
+//   { id: 4, name: "Балауса", score: 0, isExcludable: false, isWinnable: false, hidden: false },
+//   { id: 5, name: "Аида", score: 0, isExcludable: false, isWinnable: false, hidden: false },
 // ]
+export const playerList = [
+  { id: 1, name: "Мадина", score: 0, isExcludable: false, isWinnable: false, hidden: false },
+  { id: 2, name: "Баян", score: 0, isExcludable: false, isWinnable: false, hidden: false },
+  { id: 3, name: "Амир", score: 0, isExcludable: false, isWinnable: false, hidden: false },
+  { id: 4, name: "Нұрасыл", score: 0, isExcludable: false, isWinnable: false, hidden: false },
+  { id: 5, name: "Аяулым", score: 0, isExcludable: false, isWinnable: false, hidden: false },
+]
 
 const Game: React.FC = () => {
   const [categories, setCategories] = useState<Category[]>(round1.categories);
