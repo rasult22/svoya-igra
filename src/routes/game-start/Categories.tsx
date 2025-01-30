@@ -12,6 +12,7 @@ interface GameBoardProps {
 const Categories: React.FC<GameBoardProps> = ({ players, onAnswer, categories, updateCategories }) => {
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
   const [showAnswer, setShowAnswer] = useState(false);
+  const [showTimer, setShowTimer] = useState(true);
 
   const handleClick = (question: Question) => {
     setCurrentQuestion(question);
@@ -49,9 +50,21 @@ const Categories: React.FC<GameBoardProps> = ({ players, onAnswer, categories, u
     <div className="min-h-screen overflow-auto p-8">
       {currentQuestion && (
         <div className="fixed flex flex-col items-center justify-center w-full z-[50] h-full top-0 left-0 bg-blue-800">
-          <Timer onTimeEnd={() => {
-            //
-          }}/>
+          <div className='min-w-[150px] min-h-[150px] shrink-0'>
+            {showTimer && <Timer onTimeEnd={() => {
+              //
+            }}/>}
+            {
+              !showTimer && 
+              <div className="p-6 opacity-0">
+                <div className="text-center">
+                  <div className="text-6xl font-bold mb-6 text-white-500">
+                    0
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
           <div className="text-yellow-400 text-center px-4 max-w-[60%] leading-[140%] text-[32px]">
             {currentQuestion.question}
           </div>
@@ -61,7 +74,10 @@ const Categories: React.FC<GameBoardProps> = ({ players, onAnswer, categories, u
           {
             !showAnswer && currentQuestion && !currentQuestion.isRedirect && 
             <button
-              onClick={() => setShowAnswer(true)}
+              onClick={() => {
+                setShowAnswer(true)
+                setShowTimer(false)
+              }}
               className="bg-white text-black p-2 rounded-[12px] mt-4"
             >
               Показать ответ
