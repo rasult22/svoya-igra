@@ -14,7 +14,7 @@ export const playerList = [
   { id: 2, name: "Баян", score: 0, isExcludable: false, isWinnable: false, hidden: false },
   { id: 3, name: "Амир", score: 0, isExcludable: false, isWinnable: false, hidden: false },
   { id: 4, name: "Нұрасыл", score: 0, isExcludable: false, isWinnable: false, hidden: false },
-  { id: 5, name: "Аяулым", score: 0, isExcludable: false, isWinnable: false, hidden: false },
+  { id: 5, name: "Айзада", score: 0, isExcludable: false, isWinnable: false, hidden: false },
 ]
 
 const Game: React.FC = () => {

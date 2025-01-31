@@ -19,6 +19,7 @@ const Categories: React.FC<GameBoardProps> = ({ players, onAnswer, categories, u
   };
 
   const handleAnswer = (id: number, price: number, type: 'add' | 'subtract', isRedirect?: boolean) => {
+    setShowTimer(true)
     if (isRedirect) {
       if (currentQuestion) {
         const updatedCategories = categories.map((category) => ({
