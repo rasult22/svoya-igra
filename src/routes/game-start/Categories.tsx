@@ -70,7 +70,7 @@ const Categories: React.FC<GameBoardProps> = ({ players, onAnswer, categories, u
             {currentQuestion.question}
           </div>
           {
-            currentQuestion && currentQuestion.img && <img  src={currentQuestion.img} alt="img" className="w-1/2 max-w-[35vw] mt-4 rounded-lg border-2 border-black shadow" />
+            currentQuestion && currentQuestion.img && <img  src={currentQuestion.img} alt="img" className="w-1/2 object-cover max-w-[35vw] max-h-[50vh] mt-4 rounded-lg border-2 border-black shadow" />
           }
           {
             !showAnswer && currentQuestion && !currentQuestion.isRedirect && 

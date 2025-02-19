@@ -10,11 +10,11 @@ import { useNavigate } from 'react-router-dom';
 //   { id: 5, name: "Аида", score: 0, isExcludable: false, isWinnable: false, hidden: false },
 // ]
 export const playerList = [
-  { id: 1, name: "Мадина", score: 0, isExcludable: false, isWinnable: false, hidden: false },
-  { id: 2, name: "Баян", score: 0, isExcludable: false, isWinnable: false, hidden: false },
-  { id: 3, name: "Амир", score: 0, isExcludable: false, isWinnable: false, hidden: false },
-  { id: 4, name: "Нұрасыл", score: 0, isExcludable: false, isWinnable: false, hidden: false },
-  { id: 5, name: "Айзада", score: 0, isExcludable: false, isWinnable: false, hidden: false },
+  { id: 1, name: "Игрок 1", score: 0, isExcludable: false, isWinnable: false, hidden: false },
+  { id: 2, name: "Игрок 2", score: 0, isExcludable: false, isWinnable: false, hidden: false },
+  { id: 3, name: "Игрок 3", score: 0, isExcludable: false, isWinnable: false, hidden: false },
+  { id: 4, name: "Игрок 4", score: 0, isExcludable: false, isWinnable: false, hidden: false },
+  { id: 5, name: "Игрок 5", score: 0, isExcludable: false, isWinnable: false, hidden: false },
 ]
 
 const Game: React.FC = () => {
